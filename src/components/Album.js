@@ -32,6 +32,17 @@ class Album extends Component {
             <col id="song-duration-column" />
           </colgroup>
           <tbody>
+          /*This is the Song list protion I'm working on, I have it commented out currently. I'm not at all sure if I'm on the right track at the moment...
+            {      
+              this.state.album.songs.map((song, index) =>
+                <Link to={`/album/${album.slug}`} key={index}>
+                  <React.Fragment key={album.title}>
+
+                  </React.Fragment>
+                </Link>
+              )
+            }
+            */
           </tbody>
         </table>
       </section>
