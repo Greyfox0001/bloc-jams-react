@@ -54,11 +54,14 @@ class Album extends Component {
   }
 
   getIconFor(song, index) {
-    if (this.state.currentSong && this.state.isPlaying) {
-      return (<span className="ion-pause"></span>)
-    } else if (this.state.isHovered !== this.state.isPlaying){
-      return (<span className="ion-play"></span>)
+    if (this.state.isHovered && this.state.isPlaying) {
+      console.log('1')
+      return (<span className="ion-md-pause"></span>)
+    } else if (this.state.isHovered) {
+      console.log('2')
+      return (<span className="ion-md-play"></span>)
     } else {
+      console.log('3')
       return index + 1;
     }
   }
@@ -75,15 +78,14 @@ class Album extends Component {
           <div id="release-info">{this.state.album.releaseInfo}</div>
           </div>
         </section>
-        <span className="ion-play"></span>
-        <span className="ion-pause"></span>
+        <span className="ion-md-play"></span>
+        <span className="ion-md-pause"></span>
         <table id="song-list">
           <colgroup>
             <col id="song-number-column" />
             <col id="song-title-column" />
             <col id="song-duration-column" />
           </colgroup>
-
           <tbody>
             {
               this.state.album.songs.map((song, index) => {
