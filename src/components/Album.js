@@ -46,20 +46,25 @@ class Album extends Component {
   }
 
   handleSongHover(song) {
-    this.setState({isHovered: song});
+    this.setState({isHovered: song})
+    console.log(song);
   }
 
-  handleSongLeave(song){
+  handleSongLeave(song) {
     this.setState({isHovered: null})
   }
 
   getIconFor(song, index) {
-    if (this.state.isHovered && this.state.isPlaying) {
+    const isCurrentHover = this.state.currentSong === this.state.isHovered;
+    const play = <span className="ion-md-play"></span>;
+    const pause = <span className="ion-md-pause"></span>;
+    //Replace this.state.isHovered with isCurrentHover
+    if (isCurrentHover && this.state.isPlaying) {
       console.log('1')
-      return (<span className="ion-md-pause"></span>)
+      return (pause)
     } else if (this.state.isHovered) {
       console.log('2')
-      return (<span className="ion-md-play"></span>)
+      return (play)
     } else {
       console.log('3')
       return index + 1;
@@ -67,7 +72,7 @@ class Album extends Component {
   }
 
   render() {
-    //console.log(this.state.isHovered)
+    console.log(this.state.isHovered);
     return(
       <section className="album">
         <section id="album-info">
@@ -88,15 +93,14 @@ class Album extends Component {
           </colgroup>
           <tbody>
             {
-              this.state.album.songs.map((song, index) => {
-                return (
+              this.state.album.songs.map((song, index) =>
                 <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.handleSongHover(song)} onMouseLeave={() => this.handleSongLeave()}>
                   <td>{this.getIconFor(song, index)}</td>
                   <td>{song.title}</td>
                   <td>{song.duration}</td>
                 </tr>
-              );
-            })}
+              )
+            }
           </tbody>
         </table>
       </section>
