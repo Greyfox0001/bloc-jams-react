@@ -46,16 +46,25 @@ class Album extends Component {
   }
 
   handleSongHover(song) {
-    if (this.state.currentSong.isPlaying === false) {
-      this.setState({index: "ion-play"});
-    } else{
-      if (this.state.currentSong.isPlaying === true) {
-        this.setState({index: "ion-pause"});
-      }
+    this.setState({isHovered: song});
+  }
+
+  handleSongLeave(song){
+    this.setState({isHovered: null})
+  }
+
+  getIconFor(song, index) {
+    if (this.state.currentSong && this.state.isPlaying) {
+      return (<span className="ion-pause"></span>)
+    } else if (this.state.isHovered !== this.state.isPlaying){
+      return (<span className="ion-play"></span>)
+    } else {
+      return index + 1;
     }
   }
 
   render() {
+    //console.log(this.state.isHovered)
     return(
       <section className="album">
         <section id="album-info">
@@ -66,20 +75,21 @@ class Album extends Component {
           <div id="release-info">{this.state.album.releaseInfo}</div>
           </div>
         </section>
+        <span className="ion-play"></span>
+        <span className="ion-pause"></span>
         <table id="song-list">
           <colgroup>
             <col id="song-number-column" />
             <col id="song-title-column" />
             <col id="song-duration-column" />
           </colgroup>
-          <span className="ion-play"></span>
-          <span className="ion-pause"></span>
+
           <tbody>
             {
               this.state.album.songs.map((song, index) => {
                 return (
-                <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.handleSongHover(song)}>
-                  <td>{index + 1}</td>
+                <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.handleSongHover(song)} onMouseLeave={() => this.handleSongLeave()}>
+                  <td>{this.getIconFor(song, index)}</td>
                   <td>{song.title}</td>
                   <td>{song.duration}</td>
                 </tr>
