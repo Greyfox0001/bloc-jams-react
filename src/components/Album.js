@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import albumData from './../data/albums';
+import PlayerBar from './PlayerBar';
 
 class Album extends Component {
   constructor(props) {
@@ -45,6 +46,14 @@ class Album extends Component {
     }
   }
 
+  handlePrevClick() {
+    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+    const newIndex = Math.max(0, currentIndex - 1);
+    const newSong = this.state.album.songs[newIndex];
+    this.setSong(newSong);
+    this.play();
+  }
+
   handleSongHover(song) {
     this.setState({isHovered: song})
     console.log(song);
@@ -58,7 +67,6 @@ class Album extends Component {
     const isCurrentHover = this.state.currentSong === this.state.isHovered;
     const play = <span className="ion-md-play"></span>;
     const pause = <span className="ion-md-pause"></span>;
-    //Replace this.state.isHovered with isCurrentHover
     if (isCurrentHover && this.state.isPlaying) {
       console.log('1')
       return (pause)
@@ -83,8 +91,6 @@ class Album extends Component {
           <div id="release-info">{this.state.album.releaseInfo}</div>
           </div>
         </section>
-        <span className="ion-md-play"></span>
-        <span className="ion-md-pause"></span>
         <table id="song-list">
           <colgroup>
             <col id="song-number-column" />
@@ -103,6 +109,12 @@ class Album extends Component {
             }
           </tbody>
         </table>
+        <PlayerBar
+          isPlaying={this.state.isPlaying}
+          currentSong={this.state.currentSong}
+          handleSongClick={() => this.handleSongClick(this.state.currentSong)}
+          handlePrevClick={() => this.handlePrevClick()}
+        />
       </section>
     );
   }
