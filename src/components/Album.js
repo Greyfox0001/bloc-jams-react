@@ -15,6 +15,8 @@ class Album extends Component {
       currentSong: album.songs[0],
       currentTime: 0,
       duration: album.songs[0].duration,
+      volume: volume,
+      currentVolume: 1,
       isPlaying: false,
       isHovered: null
     };
@@ -89,6 +91,12 @@ class Album extends Component {
     this.setState({currentTime: newTime});
   }
 
+  handleVolumeChange(e) {
+    //const newVolume = this.audioElement.volume - still working on this
+    this.audioElement.currentVolume = newVolume
+    this.setState({currentVolume: newVolume});
+  }
+
   handleSongHover(song) {
     this.setState({isHovered: song})
     console.log(song);
@@ -103,19 +111,19 @@ class Album extends Component {
     const play = <span className="ion-md-play"></span>;
     const pause = <span className="ion-md-pause"></span>;
     if (isCurrentHover && this.state.isPlaying) {
-      console.log('1')
+      //console.log('1')
       return (pause)
     } else if (this.state.isHovered) {
-      console.log('2')
+      //console.log('2')
       return (play)
     } else {
-      console.log('3')
+      //console.log('3')
       return index + 1;
     }
   }
 
   render() {
-    console.log(this.state.isHovered);
+    //console.log(this.state.isHovered);
     return(
       <section className="album">
         <section id="album-info">
@@ -153,6 +161,7 @@ class Album extends Component {
           handlePrevClick={() => this.handlePrevClick()}
           handleNextClick={() => this.handleNextClick()}
           handleTimeChange={(e) => this.handleTimeChange(e)}
+          handleVolumeChange={(e) => this.handleVolumeChange(e)}
         />
       </section>
     );
