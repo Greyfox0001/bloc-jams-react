@@ -15,7 +15,6 @@ class Album extends Component {
       currentSong: album.songs[0],
       currentTime: 0,
       duration: album.songs[0].duration,
-      volume: volume,
       currentVolume: 1,
       isPlaying: false,
       isHovered: null
@@ -92,8 +91,10 @@ class Album extends Component {
   }
 
   handleVolumeChange(e) {
-    //const newVolume = this.audioElement.volume - still working on this
-    this.audioElement.currentVolume = newVolume
+    const newVolume = (this.state.currentVolume < 1)
+    ? 0
+    : e.target.value
+    //I found the ternary on a github repo and figured I'd try it
     this.setState({currentVolume: newVolume});
   }
 
@@ -156,6 +157,7 @@ class Album extends Component {
           isPlaying={this.state.isPlaying}
           currentSong={this.state.currentSong}
           currentTime={this.audioElement.currentTime}
+          currentVolume={this.audioElement.currentVolume}
           duration={this.audioElement.duration}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
