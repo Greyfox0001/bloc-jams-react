@@ -15,7 +15,7 @@ class Album extends Component {
       currentSong: album.songs[0],
       currentTime: 0,
       duration: album.songs[0].duration,
-      currentVolume: 1,
+      volume: 1,
       isPlaying: false,
       isHovered: null
     };
@@ -39,8 +39,8 @@ class Album extends Component {
 
   componentWillUnmount() {
     this.audioElement.src = null;
-    this.audioElement.removeEventlistener('timeupdate', this.eventListeners.timeupdate);
-    this.audioElement.removeEventlistener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.removeEventListener('timeupdate', this.eventListeners.timeupdate);
+    this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
   }
 
   play() {
@@ -90,17 +90,22 @@ class Album extends Component {
     this.setState({currentTime: newTime});
   }
 
+  formatTime(song) {
+    const songDuration = this.state.currentTime;
+    const songMinutes = Math.floor(songDuration / 60) + ":" + Math.floor(songDuration % 60);
+    const songTime = songDuration === null ? "-:--" : songMinutes;
+    this.setState({duration: songTime});
+  }
+
   handleVolumeChange(e) {
-    const newVolume = (this.state.currentVolume < 1)
-    ? 0
-    : e.target.value
-    //I found the ternary on a github repo and figured I'd try it
-    this.setState({currentVolume: newVolume});
+    const newVolume = this.audioElement.volume = e.target.value;
+    //console.log(newVolume);
+    this.setState({volume: newVolume});
   }
 
   handleSongHover(song) {
-    this.setState({isHovered: song})
-    console.log(song);
+      this.setState({isHovered: song})
+    //console.log(song);
   }
 
   handleSongLeave(song) {
@@ -122,6 +127,27 @@ class Album extends Component {
       return index + 1;
     }
   }
+
+//Am working on a way to correct the behavior where all songs are treated as hovered.
+  /*getIconFor(song, index) {
+    //const isCurrentHover = this.state.currentSong === this.state.isHovered;
+    const play = <span className="ion-md-play"></span>;
+    const pause = <span className="ion-md-pause"></span>;
+
+    if (this.state.isHovered) {
+      if (song === this.state.isHovered && this.state.isPlaying) {
+        return (pause);
+      } else {
+        return index + 1;
+      }
+    } else {
+      if ((song === this.state.isHovered) && (song !== this.state.isPlaying)) {
+        return (play)
+      } else {
+        return index + 1;
+      }
+    }
+  }*/
 
   render() {
     //console.log(this.state.isHovered);
@@ -147,7 +173,7 @@ class Album extends Component {
                 <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.handleSongHover(song)} onMouseLeave={() => this.handleSongLeave()}>
                   <td>{this.getIconFor(song, index)}</td>
                   <td>{song.title}</td>
-                  <td>{song.duration}</td>
+                  <td>{this.formatTime(song)}</td>
                 </tr>
               )
             }
@@ -156,8 +182,8 @@ class Album extends Component {
         <PlayerBar
           isPlaying={this.state.isPlaying}
           currentSong={this.state.currentSong}
-          currentTime={this.audioElement.currentTime}
           currentVolume={this.audioElement.currentVolume}
+          currentTime={this.audioElement.currentTime}
           duration={this.audioElement.duration}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
