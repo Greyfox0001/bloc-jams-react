@@ -112,6 +112,22 @@ class Album extends Component {
     this.setState({isHovered: null})
   }
 
+/*  getIconFor(song, index) {
+    const isCurrentHover = this.state.currentSong === this.state.isHovered;
+    const play = <span className="ion-md-play"></span>;
+    const pause = <span className="ion-md-pause"></span>;
+    if (isCurrentHover && this.state.isPlaying) {
+      //console.log('1')
+      return (pause)
+    } else if (this.state.isHovered) {
+      //console.log('2')
+      return (play)
+    } else {
+      //console.log('3')
+      return index + 1;
+    }
+  }*/
+
   getIconFor(song, index) {
     const isCurrentHover = this.state.currentSong === this.state.isHovered;
     const play = <span className="ion-md-play"></span>;
